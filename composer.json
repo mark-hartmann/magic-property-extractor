@@ -1,0 +1,36 @@
+{
+    "name": "hartmann/magic-property-extractor",
+    "description": "Provides property information based on class documentation",
+    "type": "library",
+    "keywords": [
+        "property",
+        "property-info",
+        "type",
+        "PHPDoc",
+        "symfony",
+        "extractor"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mark Hartmann",
+            "email": "contact@mark-hartmann.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hartmann\\PropertyInfo\\": "src\\"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hartmann\\PropertyInfo\\Tests": "tests\\"
+        }
+    },
+    "require": {
+        "symfony/property-info": "^4.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
