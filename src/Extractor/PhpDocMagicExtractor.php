@@ -122,7 +122,7 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
         /** @var $docBlock DocBlock */
         [$docBlock] = $this->getDocBlock($class);
 
-        if (!in_array($property, $this->getProperties($class), true)) {
+        if (!$docBlock || !in_array($property, $this->getProperties($class), true)) {
             return null;
         }
 
@@ -157,7 +157,7 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
         /** @var $docBlock DocBlock */
         [$docBlock] = $this->getDocBlock($class);
 
-        if (!in_array($property, $this->getProperties($class), true)) {
+        if (!$docBlock || !in_array($property, $this->getProperties($class), true)) {
             return null;
         }
 
@@ -190,6 +190,11 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
     {
         /** @var $docBlock DocBlock */
         [$docBlock] = $this->getDocBlock($class);
+
+        if (!$docBlock) {
+            return null;
+        }
+
         $propertyTags = $this->getMagicProperties($docBlock);
 
         $properties = [];
