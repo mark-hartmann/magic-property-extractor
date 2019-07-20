@@ -24,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Hartmann\\PropertyInfo\\Tests": "tests\\"
+            "Hartmann\\PropertyInfo\\Tests\\": "tests\\"
         }
     },
     "require": {
