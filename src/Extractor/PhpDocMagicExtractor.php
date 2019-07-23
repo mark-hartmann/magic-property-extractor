@@ -189,7 +189,7 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
     public function getProperties($class, array $context = []): ?array
     {
         /** @var $docBlock DocBlock */
-        [$docBlock] = $this->getDocBlock($class);
+        [$docBlock, $phpDoc] = $this->getDocBlock($class);
 
         if (!$docBlock) {
             return null;
@@ -202,10 +202,8 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
             $properties[] = $property->getVariableName();
         }
 
-        usort($properties, static function ($a, $b) use ($class) {
-            $docComment = (new ReflectionClass($class))->getDocComment();
-
-            return strpos($docComment, $a) > strpos($docComment, $b);
+        usort($properties, static function ($a, $b) use ($phpDoc) {
+            return strpos($phpDoc, $a) > strpos($phpDoc, $b);
         });
 
         return $properties;
@@ -226,6 +224,11 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
     }
 
 
+    /**
+     * @param string $class
+     *
+     * @return array [DocBlock $docBlock, string $phpdoc]
+     */
     private function getDocBlock(string $class): array
     {
         $propertyHash = sprintf('%s', $class);
@@ -234,25 +237,29 @@ class PhpDocMagicExtractor implements PropertyDescriptionExtractorInterface, Pro
             return $this->docBlocks[$propertyHash];
         }
 
-        $data = [null];
-        if ($docBlock = $this->getDocBlockFromClass($class)) {
-            $data = [$docBlock];
+        $data = [null, null];
+
+        try {
+            $reflectionClass = new ReflectionClass($class);
+
+            if ($docBlock = $this->getDocBlockFromClass($reflectionClass)) {
+                $data = [
+                    $docBlock,
+                    $reflectionClass->getDocComment() ?: null,
+                ];
+            }
+
+        } catch (ReflectionException $exception) {
         }
 
         return $this->docBlocks[$propertyHash] = $data;
     }
 
 
-    private function getDocBlockFromClass(string $class): ?DocBlock
+    private function getDocBlockFromClass(ReflectionClass $reflection): ?DocBlock
     {
         try {
-            $reflectionClass = new ReflectionClass($class);
-        } catch (ReflectionException $e) {
-            return null;
-        }
-
-        try {
-            return $this->docBlockFactory->create($reflectionClass);
+            return $this->docBlockFactory->create($reflection);
         } catch (InvalidArgumentException $e) {
             return null;
         }
