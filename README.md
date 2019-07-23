@@ -30,5 +30,4 @@ This Extractor implements the following interfaces:
 
 ### Planned features
 
-- [ ] Support PhpDoc's `@inheritDoc`/`{@inheritDoc}` tags
 - [ ] Support magic accessors and mutators
