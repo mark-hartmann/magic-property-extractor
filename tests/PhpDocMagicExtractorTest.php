@@ -107,9 +107,4 @@ class PhpDocMagicExtractorTest extends TestCase
             ['updatedAt', null],
         ];
     }
-
-    public function testOnePlusOneIsTwo(): void
-    {
-        $this->assertEquals(2, 1 + 1);
-    }
 }
