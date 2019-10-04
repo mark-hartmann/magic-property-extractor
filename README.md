@@ -12,7 +12,7 @@ composer require hartmann/magic-property-extractor
 ### Usage
 
 ```php
-use new \Hartmann\PropertyInfo\Extractor\PhpDocMagicExtractor
+use \Hartmann\PropertyInfo\Extractor\PhpDocMagicExtractor
 
 $magicExtractor = new PhpDocMagicExtractor();
 $properties = $magicExtractor->getProperties(\Foo::class);
